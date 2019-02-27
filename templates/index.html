@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Queryd.com - The Site With All The Answers</title>
+    <meta
+      name="description"
+      content="Queryd.com is where you can find all the best questions about life's most perplexing questions."
+    />
+    <meta property="fb:admins" content="708922586" />
+    <link
+      rel="stylesheet"
+      href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"
+    />
+    <link rel="stylesheet" href="/css/Q.css" />
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-sm-3 side-menu" role="nav">
+          <div class="logo row">
+            <a href="/" title="Queryd.com - The site with all the answers.">
+              <img src="/static/img/queryd.png" alt="Queryd.com" />
+            </a>
+          </div>
+          <div class="search row">
+            <form action="/search" method="get">
+              <input type="text" placeholder="Search Queryd.com" />
+              <button type="submit">Search</button>
+            </form>
+          </div>
+          <ul class="nav nav-tabs nav-stacked">
+            <li><a href="/featured/recent">Recent Questions</a></li>
+            <li><a href="/featured/popular">Popular Questions</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-9 main" role="main">
+          <p class="lead col-sm-12">
+            Find every answer on the internet from one place! Queryd.com brings
+            you answers from everywhere to any question you can think to ask.
+          </p>
+        </div>
+      </div>
+      <!-- main -->
+
+      <footer class="col-md-12">
+        <span class="copyright col-md-3 pull-right"
+          >{{ .YEAR }} Queryd.com</span
+        >
+      </footer>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <script src="/js/App.js"></script>
+
+      <noscript>
+        <p>
+          <img
+            alt="Clicky"
+            width="1"
+            height="1"
+            src="//in.getclicky.com/100595211ns.gif"
+          />
+        </p>
+      </noscript>
+      <!-- Quantcast Tag -->
+      <script type="text/javascript">
+        var _qevents = _qevents || [];
+
+        (function() {
+          var elem = document.createElement("script");
+          elem.src =
+            (document.location.protocol == "https:"
+              ? "https://secure"
+              : "http://edge") + ".quantserve.com/quant.js";
+          elem.async = true;
+          elem.type = "text/javascript";
+          var scpt = document.getElementsByTagName("script")[0];
+          scpt.parentNode.insertBefore(elem, scpt);
+        })();
+
+        _qevents.push({
+          qacct: "p-WMnkAx_tGjF6m"
+        });
+      </script>
+      <noscript>
+        <div style="display:none;">
+          <img
+            src="//pixel.quantserve.com/pixel/p-WMnkAx_tGjF6m.gif"
+            border="0"
+            height="1"
+            width="1"
+            alt="Quantcast"
+          />
+        </div>
+      </noscript>
+      <!-- End Quantcast tag -->
+    </div>
+  </body>
+</html>
