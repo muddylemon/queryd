@@ -1,0 +1,21 @@
+.summary-image {
+  margin: 20px;
+}
+
+.main .row,
+.side-menu .row {
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+.search {
+  margin: 1rem;
+}
+.hero,
+.suggestions {
+  margin: 1rem 4rem;
+}
+p.lead {
+  padding: 2rem;
+  background-color: #eef;
+}
