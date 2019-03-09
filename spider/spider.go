@@ -7,26 +7,48 @@ import (
 	"log"
 	"os"
 
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+
 	prose "gopkg.in/jdkato/prose.v2"
 )
 
 // Question is a question
 type Question struct {
-	ID   int    `json:"id"`
-	Text string `json:"text"`
+	gorm.Model
+	Title   string `gorm:"type:varchar(250);unique_index"`
+	Details string `gorm:"type:text(16)"`
+	Link    string
+}
+
+type QuestionEntity struct {
+	gorm.Model
+	QuestionID uint
+	Question   Question
+	Name       string
+	Type       string
 }
 
 // CreateQuestion creates a question
-func CreateQuestion(id int, text string) *Question {
+func CreateQuestion(title, details string) *Question {
 	return &Question{
-		ID:   id,
-		Text: text,
+		Title:   title,
+		Details: details,
 	}
 }
 
 // Process processes the process
-func Process() error {
+func Process() ([]*Question, error) {
 	var counter int
+	var questions []*Question
+
+	db := createDB()
+
+	defer db.Close()
+
+	db.AutoMigrate(&Question{})
+	db.AutoMigrate(&QuestionEntity{})
+
 	csvFile, _ := os.Open("../data/qd-raw.csv")
 	r := csv.NewReader(csvFile)
 	defer func() {
@@ -37,23 +59,50 @@ func Process() error {
 
 		if err == io.EOF {
 			log.Println("Ran out of text yo")
-			return nil
+			return nil, err
 		}
 		if err != nil {
 			log.Fatal(err)
-			return err
+			return nil, err
 		}
-		if counter > 10 {
+		if counter > 1000 {
 			log.Println("OMG slow down")
-			return nil
+			break
 		}
-		doc, _ := prose.NewDocument(fmt.Sprintf("<h1>%s</h1> <article>%s</article>", record[0], record[1]))
-		log.Printf("doc: %+v \n\n", doc)
-		for _, ent := range doc.Entities() {
-			fmt.Println(ent.Text, ent.Label)
-			// Lebron James PERSON
-			// Los Angeles GPE
+		q := CreateQuestion(record[0], record[1])
+		db.Create(&q)
+
+		doc, err := prose.NewDocument(fmt.Sprintf("<h1>%s</h1> <article>%s</article>", record[0], record[1]))
+		if err != nil {
+			fmt.Printf("Error %+v", err)
+		} else {
+			for _, ent := range doc.Entities() {
+				e := &QuestionEntity{
+					QuestionID: q.ID,
+					Name:       ent.Text,
+					Type:       ent.Label,
+				}
+				db.Create(&e)
+				fmt.Printf("QE: %+v\n\n", e)
+				// Lebron James PERSON
+				// Los Angeles GPE
+			}
 		}
+
 		counter++
 	}
+	return questions, nil
 }
+
+func createDB() *gorm.DB {
+	db, err := gorm.Open("mysql", "root:root@/queryd?charset=utf8&parseTime=True&loc=Local")
+	if err != nil {
+		panic("failed to connect database")
+	}
+	return db
+}
+
+// func PageMaker(title, body, slug string) error {
+
+// 	return nil
+// }

@@ -8,13 +8,19 @@ import (
 )
 
 func Test_CreateQuestion(t *testing.T) {
-	testQuestion := spider.CreateQuestion(55, "The Monkey Sings Tonight")
+	testQuestion := spider.CreateQuestion("The Monkey Sings Tonight", "Cool")
 	//assert.Equal(t, testQuestion.Text, "The Chicken Screams Today")
-	assert.Equal(t, testQuestion.Text, "The Monkey Sings Tonight")
+	assert.Equal(t, testQuestion.Title, "The Monkey Sings Tonight")
 
 }
 
 func Test_ProcessText(t *testing.T) {
-	results := spider.Process()
-	assert.Nil(t, results)
+	results, err := spider.Process()
+	assert.Nil(t, err)
+	assert.Equal(t, []*spider.Question{
+		&spider.Question{
+			Title:   "Hello",
+			Details: "Hogwarts",
+		},
+	}, results)
 }
