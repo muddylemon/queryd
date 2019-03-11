@@ -55,16 +55,7 @@ func Process() ([]*Question, error) {
 		log.Println("Done")
 	}()
 	for {
-		record, err := r.Read()
-
-		if err == io.EOF {
-			log.Println("Ran out of text yo")
-			return nil, err
-		}
-		if err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
+		record := read(r)
 		if counter > 1000 {
 			log.Println("OMG slow down")
 			break
@@ -100,6 +91,20 @@ func createDB() *gorm.DB {
 		panic("failed to connect database")
 	}
 	return db
+}
+
+func read(r *csv.Reader) []string {
+	record, err := r.Read()
+
+	if err == io.EOF {
+		log.Println("Ran out of text yo")
+		return nil
+	}
+	if err != nil {
+		log.Fatal(err)
+		return nil
+	}
+	return record
 }
 
 // func PageMaker(title, body, slug string) error {
