@@ -16,9 +16,9 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 
-	app.StaticWeb("/static", "./resources")
+	app.StaticWeb("/static", "./web")
 
-	tmpl := iris.HTML("./templates", ".html").Reload(true)
+	tmpl := iris.HTML("./web/templates", ".html").Reload(true)
 	app.RegisterView(tmpl)
 
 	app.Handle("GET", "/", func(ctx iris.Context) {
